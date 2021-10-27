@@ -82,15 +82,3 @@ with libreq.urlopen('http://export.arxiv.org/api/query?search_query=all:electron
     r = url.read()
 print(r)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
