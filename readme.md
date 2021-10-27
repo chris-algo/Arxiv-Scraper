@@ -5,7 +5,7 @@
 ```
 http://export.arxiv.org/api/{method_name}?{parameters}
 example: 
-http://export.arxiv.org/api/query?search_query=all:electron&start=0&max_results=1
+http://export.arxiv.org/api/query?search_query=cs.ai&start=0&max_results=100
 ```
 
 ### Query Interface
