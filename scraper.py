@@ -18,10 +18,14 @@ def paper_to_json_file(paper_dict, json_dir):
 
 
 def download_pdf(paper_id, save_dir):
+    save_path = os.path.join(save_dir, paper_id + '.pdf')
+
+    if os.path.exists(save_path):
+        return
+
     full_url = "http://arxiv.org/pdf/{}".format(paper_id)
     r = requests.get(full_url, allow_redirects=True)
-
-    save_path = os.path.join(save_dir, paper_id + '.pdf')
+    
     open(save_path, 'wb').write(r.content)
     
 
@@ -40,14 +44,17 @@ def main():
         with libreq.urlopen(query_url) as url:
             results = url.read()
         results_dict = xmltodict.parse(results)
+        try:
+            for paper in results_dict["feed"]["entry"]:
+                
+                year = paper["published"][:4]
+                paper_id = paper["id"][21:]
 
-        for paper in results_dict["feed"]["entry"]:
-            paper_to_json_file(paper, json_dir)
-
-            year = paper["published"][:4]
-            paper_id = paper["id"][21:]
-            download_pdf(paper_id, pdf_dir)
-            current_index += 1
+                paper_to_json_file(paper, json_dir)
+                download_pdf(paper_id, pdf_dir)
+                current_index += 1
+        except:
+            continue
             
         print(current_index)
         time.sleep(wait_time)
